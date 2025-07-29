@@ -11,16 +11,6 @@ import UserHome from "./Pages/Home";
 import ScanPage from "./Pages/ScanPage";
 import TutorialsPage from "./Pages/TutorialsPage";
 import ProfilePage from "./Pages/ProfilePage";
-
-// Import Components
-import Footer from "./components/Footer";
-=======
-import Home from "./Pages/LandingPage"
-import Signup from "./Pages/Signup"
-import Login from "./Pages/Login"
-import UserHome from "./Pages/Home"
-
-
 import Contact from "./Pages/Contact"
 import Tutorial from "./Pages/Tutorial"
 import Community from "./Pages/Community"
