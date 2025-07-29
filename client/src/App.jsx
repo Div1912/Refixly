@@ -6,6 +6,11 @@ import Signup from "./Pages/Signup"
 import Login from "./Pages/Login"
 import UserHome from "./Pages/Home"
 
+import Contact from "./Pages/Contact"
+import Tutorial from "./Pages/Tutorial"
+import Community from "./Pages/Community"
+import Footer from "./components/Foote
+
 function App() {
   return (
     <>
@@ -14,6 +19,9 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<UserHome />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/tutorial" element={<Tutorial />} />
+        <Route path="/community" element={<Community />} />
       </Routes>
 
       <Toaster />
