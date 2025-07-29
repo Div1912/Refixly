@@ -19,7 +19,7 @@ const TutorialsPage = () => {
       setTutorials([]);
     }
     try {
-      let apiUrl = `/api/tutorials/${searchTerm}`;
+      let apiUrl = `https://refixly.onrender.com/api/tutorials/${searchTerm}`;
       if (loadMore && nextPageToken) {
         apiUrl += `?pageToken=${nextPageToken}`;
       }
