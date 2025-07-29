@@ -74,6 +74,7 @@ const NavBar = () => {
         </NavLink>
 
         <ul className="flex space-x-6 text-sm md:text-base font-medium items-center">
+
           <li><NavLink to="/home" className={linkClass}>Home</NavLink></li>
           <li><NavLink to="/scan" className={linkClass}>Scan</NavLink></li>
           <li><NavLink to="/upload" className={linkClass}>Tutorial</NavLink></li>
@@ -85,6 +86,34 @@ const NavBar = () => {
             <button 
               onClick={() => setIsDropdownOpen(!isDropdownOpen)} 
               className="w-10 h-10 rounded-full border-2 border-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+
+          <li>
+            <NavLink to="/home" className={linkClass + ' tour-step-4'}>
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/tutorial" className={linkClass + ' tour-step-5'}>
+              Tutorial
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/community" className={linkClass + ' tour-step-6'}>
+              Community
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/contact" className={linkClass + ' tour-step-7'}>
+              Contact
+            </NavLink>
+          </li>
+          <li>
+            <button
+              onClick={handleLogout}
+              aria-label="Logout"
+              data-testid="logout-button"
+              className="px-4 py-1 rounded-full bg-blue-500 text-white hover:bg-blue-400 transition tour-step-8"
+
             >
               <img
                 className="w-full h-full rounded-full object-cover"
