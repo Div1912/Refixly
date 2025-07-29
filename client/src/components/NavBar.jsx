@@ -86,6 +86,7 @@ const NavBar = () => {
             <button 
               onClick={() => setIsDropdownOpen(!isDropdownOpen)} 
               className="w-10 h-10 rounded-full border-2 border-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+            ></button>
 
           <li>
             <NavLink to="/home" className={linkClass + ' tour-step-4'}>
