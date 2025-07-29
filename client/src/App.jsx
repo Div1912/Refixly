@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import React from 'react';
 
+
 // Import Pages
 import Home from "./Pages/LandingPage";
 import Signup from "./Pages/Signup";
@@ -13,6 +14,12 @@ import ProfilePage from "./Pages/ProfilePage";
 
 // Import Components
 import Footer from "./components/Footer";
+=======
+import Home from "./Pages/LandingPage"
+import Signup from "./Pages/Signup"
+import Login from "./Pages/Login"
+import UserHome from "./Pages/Home"
+
 
 function App() {
   return (
@@ -28,7 +35,6 @@ function App() {
       </Routes>
 
       <Toaster />
-      <Footer />
     </>
   );
 }
