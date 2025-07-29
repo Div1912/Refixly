@@ -62,88 +62,59 @@ const NavBar = () => {
     isActive ? 'text-blue-400 underline' : 'hover:text-blue-300 transition';
 
   return (
-    <nav 
-      className={`fixed top-0 left-0 right-0 z-50 duration-300 text-white backdrop-blur-sm transition-colors ${
-        overHero ? 'bg-transparent' : 'bg-[#1E293B]/70'
-      }`}
-      aria-label="Main Navigation"
-    >
-      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        <NavLink to="/">
-          <h1 className={`text-2xl font-bold ${overHero ? 'text-blue-400' : 'text-white'}`}>Refixly</h1>
-        </NavLink>
+    <nav
+  className={`fixed top-0 left-0 right-0 z-50 duration-300 text-white backdrop-blur-sm transition-colors ${
+    overHero ? 'bg-transparent' : 'bg-[#1E293B]/70'
+  }`}
+  aria-label="Main Navigation"
+>
+  <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+    <NavLink to="/">
+      <h1 className={`text-2xl font-bold ${overHero ? 'text-blue-400' : 'text-white'}`}>Refixly</h1>
+    </NavLink>
 
-        <ul className="flex space-x-6 text-sm md:text-base font-medium items-center">
+    <ul className="flex space-x-6 text-sm md:text-base font-medium items-center">
+      <li><NavLink to="/home" className={linkClass}>Home</NavLink></li>
+      <li><NavLink to="/scan" className={linkClass}>Scan</NavLink></li>
+      <li><NavLink to="/tutorial" className={linkClass}>Tutorial</NavLink></li>
+      <li><NavLink to="/community" className={linkClass}>Community</NavLink></li>
+      <li><NavLink to="/contact" className={linkClass}>Contact</NavLink></li>
 
-          <li><NavLink to="/home" className={linkClass}>Home</NavLink></li>
-          <li><NavLink to="/scan" className={linkClass}>Scan</NavLink></li>
-          <li><NavLink to="/upload" className={linkClass}>Tutorial</NavLink></li>
-          <li><NavLink to="/community" className={linkClass}>Community</NavLink></li>
-          <li><NavLink to="/contact" className={linkClass}>Contact</NavLink></li>
+      {/* Profile Dropdown */}
+      <li className="relative" ref={dropdownRef}>
+        <button
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          className="w-10 h-10 rounded-full border-2 border-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+        >
+          <img
+            className="w-full h-full rounded-full object-cover"
+            src={user?.photoURL || `https://ui-avatars.com/api/?name=${user?.email}&background=random`}
+            alt="Profile"
+          />
+        </button>
 
-          {/* Profile Dropdown */}
-          <li className="relative" ref={dropdownRef}>
-            <button 
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)} 
-              className="w-10 h-10 rounded-full border-2 border-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-            ></button>
-
-          <li>
-            <NavLink to="/home" className={linkClass + ' tour-step-4'}>
-              Home
+        {isDropdownOpen && (
+          <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5">
+            <NavLink
+              to="/profile"
+              onClick={() => setIsDropdownOpen(false)}
+              className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white"
+            >
+              My Profile
             </NavLink>
-          </li>
-          <li>
-            <NavLink to="/tutorial" className={linkClass + ' tour-step-5'}>
-              Tutorial
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/community" className={linkClass + ' tour-step-6'}>
-              Community
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/contact" className={linkClass + ' tour-step-7'}>
-              Contact
-            </NavLink>
-          </li>
-          <li>
             <button
               onClick={handleLogout}
-              aria-label="Logout"
-              data-testid="logout-button"
-              className="px-4 py-1 rounded-full bg-blue-500 text-white hover:bg-blue-400 transition tour-step-8"
-
+              className="w-full text-left block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white"
             >
-              <img
-                className="w-full h-full rounded-full object-cover"
-                src={user?.photoURL || `https://ui-avatars.com/api/?name=${user?.email}&background=random`}
-                alt="Profile"
-              />
+              Logout
             </button>
+          </div>
+        )}
+      </li>
+    </ul>
+  </div>
+</nav>
 
-            {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 ring-1 ring-black ring-opacity-5">
-                <NavLink 
-                  to="/profile" 
-                  onClick={() => setIsDropdownOpen(false)} 
-                  className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white"
-                >
-                  My Profile
-                </NavLink>
-                <button 
-                  onClick={handleLogout} 
-                  className="w-full text-left block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white"
-                >
-                  Logout
-                </button>
-              </div>
-            )}
-          </li>
-        </ul>
-      </div>
-    </nav>
   );
 };
 
