@@ -130,27 +130,59 @@ const Home = () => {
         </div>
       </section>
 
-      {/* How It Works */}
-      <section id="how-it-works" className="max-w-7xl mx-auto px-4 sm:px-6 md:px-20 py-20 tour-step-9" data-aos="fade-right">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 text-[#38BDF8]">How It Works</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-center text-[#CBD5E1]">
-            {['🎥 Scan', '📚 Learn', '🛠️ Repair'].map((step, i) => (
-              <div
-                key={i}
-                className="bg-[#334155] p-8 rounded-2xl shadow-lg transform transition-all duration-300 hover:scale-105 hover:-translate-y-2 hover:shadow-[0_10px_25px_rgba(56,189,248,0.3)] hover:bg-[#1e293b]"
-                >
-                <h3 className="text-xl font-semibold mb-2">{step.split(' ')[1]}</h3>
-                <p> 
-                {[
-                'Use your webcam to scan the item.',
-                'Access step-by-step repair guides.',
-                'Follow tutorials to fix confidently.',
-                ][i]}
-                </p>
-              </div>
-            ))}
-          </div>
-      </section>
+     // Add at the top of your file
+import { FaCamera, FaBookOpen, FaTools, FaCheckSquare } from 'react-icons/fa';
+// Or use your own SVGs/images for icons
+
+// In your component, replace your current How It Works section with:
+
+<section id="how-it-works" className="max-w-7xl mx-auto px-4 sm:px-6 md:px-20 py-20 tour-step-9" data-aos="fade-right">
+  <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 text-[#38BDF8]">How It Works</h2>
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-center">
+
+    {/* --- Scan Object --- */}
+    <button
+      className="bg-white p-8 flex flex-col items-center rounded-2xl shadow-lg hover:scale-[1.03] hover:shadow-xl transition-all duration-300"
+      onClick={() => {/* navigate or open scan modal */}}
+    >
+      <FaCamera size={48} className="mb-3 text-[#334155]" />
+      <div className="text-[#2563EB] font-semibold text-lg mb-1">Scan Object</div>
+      <div className="text-[#64748B] text-base">Use your camera to detect<br />issues instantly.</div>
+    </button>
+
+    {/* --- Get Tutorials --- */}
+    <button
+      className="bg-white p-8 flex flex-col items-center rounded-2xl shadow-lg hover:scale-[1.03] hover:shadow-xl transition-all duration-300"
+      onClick={() => {/* navigate or show tutorials drawer */}}
+    >
+      <FaBookOpen size={48} className="mb-3 text-[#334155]" />
+      <div className="text-[#2563EB] font-semibold text-lg mb-1">Get Tutorials</div>
+      <div className="text-[#64748B] text-base">Receive clear, relevant repair guides.</div>
+    </button>
+
+    {/* --- Repair with AR --- */}
+    <button
+      className="bg-white p-8 flex flex-col items-center rounded-2xl shadow-lg hover:scale-[1.03] hover:shadow-xl transition-all duration-300"
+      onClick={() => {/* show AR repair screen or show 'coming soon' message */}}
+    >
+      <FaTools size={48} className="mb-3 text-[#334155]" />
+      <div className="text-[#2563EB] font-semibold text-lg mb-1">Repair with AR</div>
+      <div className="text-[#64748B] text-base">Follow real-time AR instructions.</div>
+    </button>
+
+    {/* --- Verify & Complete --- */}
+    <button
+      className="bg-white p-8 flex flex-col items-center rounded-2xl shadow-lg hover:scale-[1.03] hover:shadow-xl transition-all duration-300"
+      onClick={() => {/* complete or show verification modal */}}
+    >
+      <FaCheckSquare size={48} className="mb-3 text-[#334155]" />
+      <div className="text-[#2563EB] font-semibold text-lg mb-1">Verify & Complete</div>
+      <div className="text-[#64748B] text-base">Mark your fix and save for reference.</div>
+    </button>
+
+  </div>
+</section>
+
 
       {/* Features */}
       <section id="features" className="max-w-7xl mx-auto px-4 sm:px-6 md:px-20 py-20 tour-step-10" data-aos="fade-left">
