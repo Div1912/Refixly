@@ -1,28 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import '../index.css';
 import ScrollToTop from '../components/ScrollTop';
-import { FaTwitter, FaFacebookF, FaLinkedinIn } from 'react-icons/fa';
+import {
+  FaTwitter,
+  FaFacebookF,
+  FaLinkedinIn,
+  FaCamera,
+  FaBookOpen,
+  FaTools,
+  FaCheckSquare
+} from 'react-icons/fa';
 import Tour from '../components/Tour';
 import FAQAccordion from '../components/FAQAccordion';
-
+import Webcam from 'react-webcam';
 
 const Home = () => {
   const [showTour, setShowTour] = useState(false);
+  const [showCamera, setShowCamera] = useState(false);
+  const [capturedImage, setCapturedImage] = useState(null);
+  const webcamRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Always show the tour after DOM is ready
     setTimeout(() => setShowTour(true), 300);
   }, []);
 
   useEffect(() => {
-    AOS.init({
-      duration: 1200,
-      once: false,
-      mirror: true,
-    });
+    AOS.init({ duration: 1200, once: false, mirror: true });
   }, []);
 
   const features = [
@@ -55,52 +62,75 @@ const Home = () => {
     },
   ];
 
+  // Capture image from camera
+  const capture = () => {
+    if (webcamRef.current) {
+      const imageSrc = webcamRef.current.getScreenshot();
+      setCapturedImage(imageSrc);
+    }
+  };
+
+  // Retake or close logic
+  const resetCapture = () => setCapturedImage(null);
+
+  const closeCameraModal = () => {
+    setShowCamera(false);
+    setCapturedImage(null);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-tr from-[#0F172A] via-[#1E293B] to-[#334155] text-white font-sans overflow-x-hidden">
       {showTour && <Tour onClose={() => setShowTour(false)} auto={true} />}
+
       <style>{`
         .faq-glow {
           box-shadow: 0 0 12px 3px #38BDF8;
           transition: box-shadow 0.3s ease-in-out;
         }
+        .modal-backdrop {
+          position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+          background: rgba(0,0,0,0.4); z-index: 40; display: flex; align-items: center; justify-content: center;
+        }
+        .modal-box {
+          background: #1e293b; padding: 2rem; border-radius: 1.5rem; text-align: center; max-width: 95vw;
+        }
       `}</style>
 
       {/* Header */}
-<header className="w-full px-4 sm:px-6 md:px-12 py-4 flex items-center justify-between bg-white/10 backdrop-blur-md shadow-md">
-  <Link to="/login">
-    <h1 className="text-2xl sm:text-3xl font-extrabold text-[#38BDF8] hover:scale-105 transition-transform duration-300">
-      Refixly
-    </h1>
-  </Link>
-
-  <nav>
-    <ul className="hidden md:flex items-center space-x-6 text-sm sm:text-base font-medium text-white">
-      {["how-it-works", "features", "faq", "ready"].map((id, i) => (
-        <li key={i}>
-          <a
-            href={`#${id}`}
-            className="relative group transition-colors duration-200"
-          >
-            <span className="hover:text-[#0EA5E9]">{{
-              "how-it-works": "How It Works",
-              features: "What Refixly Can Do",
-              faq: "FAQ",
-              ready: "Ready to Fix?",
-            }[id]}</span>
-            <span className="absolute left-0 -bottom-1 h-0.5 w-0 bg-[#0EA5E9] transition-all duration-300 group-hover:w-full"></span>
-          </a>
-        </li>
-      ))}
-      <li>
-        <Link to="/signup">
-          <button className="ml-2 px-6 py-2 text-white border-2 border-white rounded-full bg-transparent font-semibold transition duration-300 hover:bg-white hover:text-[#001F3F] hover:shadow-[0_0_10px_2px_rgba(255,255,255,0.7)]">
-            Sign Up
-          </button>
+      <header className="w-full px-4 sm:px-6 md:px-12 py-4 flex items-center justify-between bg-white/10 backdrop-blur-md shadow-md">
+        <Link to="/login">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#38BDF8] hover:scale-105 transition-transform duration-300">
+            Refixly
+          </h1>
         </Link>
-      </li>
-    </ul>
-  </nav>
-</header>
+        <nav>
+          <ul className="hidden md:flex items-center space-x-6 text-sm sm:text-base font-medium text-white">
+            {["how-it-works", "features", "faq", "ready"].map((id, i) => (
+              <li key={i}>
+                <a
+                  href={`#${id}`}
+                  className="relative group transition-colors duration-200"
+                >
+                  <span className="hover:text-[#0EA5E9]">{{
+                    "how-it-works": "How It Works",
+                    features: "What Refixly Can Do",
+                    faq: "FAQ",
+                    ready: "Ready to Fix?",
+                  }[id]}</span>
+                  <span className="absolute left-0 -bottom-1 h-0.5 w-0 bg-[#0EA5E9] transition-all duration-300 group-hover:w-full"></span>
+                </a>
+              </li>
+            ))}
+            <li>
+              <Link to="/signup">
+                <button className="ml-2 px-6 py-2 text-white border-2 border-white rounded-full bg-transparent font-semibold transition duration-300 hover:bg-white hover:text-[#001F3F] hover:shadow-[0_0_10px_2px_rgba(255,255,255,0.7)]">
+                  Sign Up
+                </button>
+              </Link>
+            </li>
+          </ul>
+        </nav>
+      </header>
 
       {/* Hero Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-20 py-16 text-center md:text-left tour-step-3" data-aos="fade-up">
@@ -114,11 +144,10 @@ const Home = () => {
             </p>
             <Link
               to="/login"
-               className="inline-block mt-8 px-8 py-3 text-white font-montserrat uppercase text-[17px] border-4 border-white rounded-full bg-transparent transition-all duration-500 shadow-lg hover:bg-white hover:text-[#001F3F] hover:shadow-[0_0_15px_3px_rgba(255,255,255,0.7)]"
+              className="inline-block mt-8 px-8 py-3 text-white font-montserrat uppercase text-[17px] border-4 border-white rounded-full bg-transparent transition-all duration-500 shadow-lg hover:bg-white hover:text-[#001F3F] hover:shadow-[0_0_15px_3px_rgba(255,255,255,0.7)]"
             >
               Get Started
             </Link>
-
           </div>
           <div className="flex-1 flex justify-center">
             <img
@@ -130,69 +159,100 @@ const Home = () => {
         </div>
       </section>
 
-     // Add at the top of your file
-import { FaCamera, FaBookOpen, FaTools, FaCheckSquare } from 'react-icons/fa';
-// Or use your own SVGs/images for icons
+      {/* How It Works */}
+      <section id="how-it-works" className="max-w-7xl mx-auto px-4 sm:px-6 md:px-20 py-20 tour-step-9" data-aos="fade-right">
+        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 text-[#38BDF8]">How It Works</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          {/* Scan Object */}
+          <button
+            className="bg-white p-8 flex flex-col items-center rounded-2xl shadow-lg hover:scale-[1.03] hover:shadow-xl transition-all duration-300"
+            onClick={() => setShowCamera(true)}
+          >
+            <FaCamera size={48} className="mb-3 text-[#334155]" />
+            <div className="text-[#2563EB] font-semibold text-lg mb-1">Scan Object</div>
+            <div className="text-[#64748B] text-base">Use your camera to detect<br />issues instantly.</div>
+          </button>
+          {/* Get Tutorials */}
+          <button
+            className="bg-white p-8 flex flex-col items-center rounded-2xl shadow-lg hover:scale-[1.03] hover:shadow-xl transition-all duration-300"
+            onClick={() => navigate('/tutorial')}
+          >
+            <FaBookOpen size={48} className="mb-3 text-[#334155]" />
+            <div className="text-[#2563EB] font-semibold text-lg mb-1">Get Tutorials</div>
+            <div className="text-[#64748B] text-base">Receive clear, relevant repair guides.</div>
+          </button>
+          {/* Repair with AR */}
+          <button
+            className="bg-white p-8 flex flex-col items-center rounded-2xl shadow-lg hover:scale-[1.03] hover:shadow-xl transition-all duration-300"
+            onClick={() => alert('AR Repair feature coming soon!')}
+          >
+            <FaTools size={48} className="mb-3 text-[#334155]" />
+            <div className="text-[#2563EB] font-semibold text-lg mb-1">Repair with AR</div>
+            <div className="text-[#64748B] text-base">Follow real-time AR instructions.</div>
+          </button>
+          {/* Verify & Complete */}
+          <button
+            className="bg-white p-8 flex flex-col items-center rounded-2xl shadow-lg hover:scale-[1.03] hover:shadow-xl transition-all duration-300"
+            onClick={() => alert('Verify & Complete feature coming soon!')}
+          >
+            <FaCheckSquare size={48} className="mb-3 text-[#334155]" />
+            <div className="text-[#2563EB] font-semibold text-lg mb-1">Verify & Complete</div>
+            <div className="text-[#64748B] text-base">Mark your fix and save for reference.</div>
+          </button>
+        </div>
+      </section>
 
-// In your component, replace your current How It Works section with:
-
-<section id="how-it-works" className="max-w-7xl mx-auto px-4 sm:px-6 md:px-20 py-20 tour-step-9" data-aos="fade-right">
-  <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 text-[#38BDF8]">How It Works</h2>
-  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-center">
-
-    {/* --- Scan Object --- */}
-    <button
-      className="bg-white p-8 flex flex-col items-center rounded-2xl shadow-lg hover:scale-[1.03] hover:shadow-xl transition-all duration-300"
-      onClick={() => {/* navigate or open scan modal */}}
-    >
-      <FaCamera size={48} className="mb-3 text-[#334155]" />
-      <div className="text-[#2563EB] font-semibold text-lg mb-1">Scan Object</div>
-      <div className="text-[#64748B] text-base">Use your camera to detect<br />issues instantly.</div>
-    </button>
-
-    {/* --- Get Tutorials --- */}
-    <button
-      className="bg-white p-8 flex flex-col items-center rounded-2xl shadow-lg hover:scale-[1.03] hover:shadow-xl transition-all duration-300"
-      onClick={() => {/* navigate or show tutorials drawer */}}
-    >
-      <FaBookOpen size={48} className="mb-3 text-[#334155]" />
-      <div className="text-[#2563EB] font-semibold text-lg mb-1">Get Tutorials</div>
-      <div className="text-[#64748B] text-base">Receive clear, relevant repair guides.</div>
-    </button>
-
-    {/* --- Repair with AR --- */}
-    <button
-      className="bg-white p-8 flex flex-col items-center rounded-2xl shadow-lg hover:scale-[1.03] hover:shadow-xl transition-all duration-300"
-      onClick={() => {/* show AR repair screen or show 'coming soon' message */}}
-    >
-      <FaTools size={48} className="mb-3 text-[#334155]" />
-      <div className="text-[#2563EB] font-semibold text-lg mb-1">Repair with AR</div>
-      <div className="text-[#64748B] text-base">Follow real-time AR instructions.</div>
-    </button>
-
-    {/* --- Verify & Complete --- */}
-    <button
-      className="bg-white p-8 flex flex-col items-center rounded-2xl shadow-lg hover:scale-[1.03] hover:shadow-xl transition-all duration-300"
-      onClick={() => {/* complete or show verification modal */}}
-    >
-      <FaCheckSquare size={48} className="mb-3 text-[#334155]" />
-      <div className="text-[#2563EB] font-semibold text-lg mb-1">Verify & Complete</div>
-      <div className="text-[#64748B] text-base">Mark your fix and save for reference.</div>
-    </button>
-
-  </div>
-</section>
-
+      {/* Camera Modal */}
+      {showCamera &&
+        <div className="modal-backdrop">
+          <div className="modal-box">
+            {!capturedImage ? (
+              <>
+                <Webcam
+                  ref={webcamRef}
+                  audio={false}
+                  screenshotFormat="image/jpeg"
+                  videoConstraints={{ facingMode: "environment" }}
+                  className="rounded-xl mx-auto"
+                  style={{ width: "340px", height: "260px" }}
+                />
+                <button
+                  className="mt-3 px-6 py-2 bg-[#38BDF8] text-black rounded-full font-bold hover:bg-[#0EA5E9] transition"
+                  onClick={capture}
+                >Capture</button>
+                <button
+                  className="mt-3 ml-2 px-6 py-2 bg-gray-500 text-white rounded-full font-bold hover:bg-gray-700 transition"
+                  onClick={closeCameraModal}
+                >Close</button>
+              </>
+            ) : (
+              <>
+                <img src={capturedImage} alt="Captured" className="rounded-xl mx-auto" style={{ width: "340px", height: "260px" }} />
+                {/* Place AI/upload logic here for capturedImage if needed */}
+                <div className="mt-3 flex justify-center space-x-4">
+                  <button
+                    className="px-6 py-2 bg-[#38BDF8] text-black rounded-full font-bold hover:bg-[#0EA5E9] transition"
+                    onClick={resetCapture}
+                  >Retake</button>
+                  <button
+                    className="px-6 py-2 bg-gray-500 text-white rounded-full font-bold hover:bg-gray-700 transition"
+                    onClick={closeCameraModal}
+                  >Close</button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      }
 
       {/* Features */}
       <section id="features" className="max-w-7xl mx-auto px-4 sm:px-6 md:px-20 py-20 tour-step-10" data-aos="fade-left">
         <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 text-[#38BDF8]">What Refixly Can Do</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-center text-[#CBD5E1]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 text-center text-[#CBD5E1]">
           {features.map(({ title, desc }, i) => (
             <div
               key={i}
-                className="bg-[#334155] p-8 rounded-2xl shadow-lg transform transition-all duration-300 hover:scale-105 hover:-translate-y-2 hover:shadow-[0_10px_25px_rgba(56,189,248,0.3)] hover:bg-[#1e293b]"
-                
+              className="bg-[#334155] p-8 rounded-2xl shadow-lg transform transition-all duration-300 hover:scale-105 hover:-translate-y-2 hover:shadow-[0_10px_25px_rgba(56,189,248,0.3)] hover:bg-[#1e293b]"
             >
               <h3 className="text-xl font-semibold mb-4 text-[#38BDF8]">{title}</h3>
               <p className="text-[#CBD5E1]">{desc}</p>
@@ -201,21 +261,19 @@ import { FaCamera, FaBookOpen, FaTools, FaCheckSquare } from 'react-icons/fa';
         </div>
       </section>
 
-
-
       {/* FAQ */}
       <section
-  id="faq"
-  className="max-w-7xl mx-auto px-4 sm:px-6 md:px-20 py-20"
-  data-aos="fade-up"
->
-  <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 text-[#38BDF8]">
-    Frequently Asked Questions
-  </h2>
-  <div className="transition-transform duration-300 ease-in-out hover:scale-[1.02] hover:shadow-2xl rounded-xl bg-white/5 backdrop-blur-sm p-4">
-    <FAQAccordion faqs={faqs} />
-  </div>
-</section>
+        id="faq"
+        className="max-w-7xl mx-auto px-4 sm:px-6 md:px-20 py-20"
+        data-aos="fade-up"
+      >
+        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 text-[#38BDF8]">
+          Frequently Asked Questions
+        </h2>
+        <div className="transition-transform duration-300 ease-in-out hover:scale-[1.02] hover:shadow-2xl rounded-xl bg-white/5 backdrop-blur-sm p-4">
+          <FAQAccordion faqs={faqs} />
+        </div>
+      </section>
 
       {/* Call To Action */}
       <section id="ready" className="bg-[#0F172A] py-20 text-center tour-step-12" data-aos="zoom-in">
